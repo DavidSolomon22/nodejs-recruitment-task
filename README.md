@@ -48,23 +48,13 @@ $ docker-compose up
 ## Test
 
 ### Unit tests
-Change `command` property in `docker-compose.test.yml` file for
-```yaml
-command: npm run test:watch
-```
-And run command
 ```bash
-$ docker-compose -f docker-compose.test.yml -p nodejs-recruitment-task-test up
+$ TEST=unit docker-compose -f docker-compose.test.yml -p nodejs-recruitment-task-test up
 ```
 
 ### E2E tests
-Change `command` property in `docker-compose.test.yml` file for
-```yaml
-command: npm run test:e2e:watch
-```
-And run the same command as for unit tests
 ```bash
-$ docker-compose -f docker-compose.test.yml -p nodejs-recruitment-task-test up
+$ TEST=e2e docker-compose -f docker-compose.test.yml -p nodejs-recruitment-task-test up
 ```
 
 ### Continuous Integration
