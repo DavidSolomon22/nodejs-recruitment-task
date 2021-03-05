@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { OmdbService } from 'services/omdb';
 import { MovieService } from '.';
 import { MovieRepository } from '../repositories';
 
 describe('MovieService', () => {
   let service: MovieService;
   let repository: MovieRepository;
+  let omdbService: OmdbService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -13,7 +15,14 @@ describe('MovieService', () => {
         {
           provide: MovieRepository,
           useValue: {
-            createDebt: jest.fn(),
+            create: jest.fn(),
+            getUserMovies: jest.fn(),
+          },
+        },
+        {
+          provide: OmdbService,
+          useValue: {
+            getMovieByTitle: jest.fn(),
           },
         },
       ],
@@ -21,6 +30,7 @@ describe('MovieService', () => {
 
     service = module.get<MovieService>(MovieService);
     repository = module.get<MovieRepository>(MovieRepository);
+    omdbService = module.get<OmdbService>(OmdbService);
   });
 
   afterEach(() => {
@@ -33,5 +43,9 @@ describe('MovieService', () => {
 
   it('repository should be defined', () => {
     expect(repository).toBeDefined();
+  });
+
+  it('omdbService should be defined', () => {
+    expect(omdbService).toBeDefined();
   });
 });
