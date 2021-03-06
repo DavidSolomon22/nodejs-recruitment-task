@@ -15,7 +15,11 @@ export class MovieRepository {
     throw new NotImplementedException();
   }
 
-  async getUserMovies(userId: string): Promise<Movie> {
+  async getUserMovies(userId: string): Promise<Movie[]> {
+    throw new NotImplementedException();
+  }
+
+  async getUserLastFiveMovies(userId: string): Promise<Movie[]> {
     throw new NotImplementedException();
   }
 }

@@ -1,10 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { omdbMovie } from 'common/mocks';
+import { CreatedMoviesLimitExceededException } from 'exceptions/created-movies-limit-exceeded.exception';
 import { OmdbService } from 'services/omdb';
 import { MovieService } from '.';
+import {
+  createdMovie,
+  movieCreateDto,
+  movieDto,
+  movieForCreation,
+  toBigMoviesArray,
+  userId,
+} from '../mocks';
 import { MovieRepository } from '../repositories';
 
 describe('MovieService', () => {
-  let service: MovieService;
+  let movieService: MovieService;
   let repository: MovieRepository;
   let omdbService: OmdbService;
 
@@ -17,6 +27,7 @@ describe('MovieService', () => {
           useValue: {
             create: jest.fn(),
             getUserMovies: jest.fn(),
+            getUserLastFiveMovies: jest.fn(),
           },
         },
         {
@@ -28,7 +39,7 @@ describe('MovieService', () => {
       ],
     }).compile();
 
-    service = module.get<MovieService>(MovieService);
+    movieService = module.get<MovieService>(MovieService);
     repository = module.get<MovieRepository>(MovieRepository);
     omdbService = module.get<OmdbService>(OmdbService);
   });
@@ -38,7 +49,7 @@ describe('MovieService', () => {
   });
 
   it('service should be defined', () => {
-    expect(service).toBeDefined();
+    expect(movieService).toBeDefined();
   });
 
   it('repository should be defined', () => {
@@ -47,5 +58,34 @@ describe('MovieService', () => {
 
   it('omdbService should be defined', () => {
     expect(omdbService).toBeDefined();
+  });
+
+  describe('createMovie', () => {
+    it('should throw an error if user with basic role has already seen 5 movies at month', async () => {
+      jest
+        .spyOn(repository, 'getUserLastFiveMovies')
+        .mockResolvedValue(toBigMoviesArray);
+      expect(
+        movieService.createMovie(userId, movieCreateDto),
+      ).rejects.toThrowError(CreatedMoviesLimitExceededException);
+    });
+    it('should get information about the movie from omdb service', async () => {
+      const getMovieByTitleSpy = jest
+        .spyOn(omdbService, 'getMovieByTitle')
+        .mockResolvedValue(omdbMovie);
+      await movieService.createMovie(userId, movieCreateDto);
+      expect(getMovieByTitleSpy).toHaveBeenCalledTimes(1);
+      expect(getMovieByTitleSpy).toHaveBeenCalledWith(movieCreateDto.title);
+    });
+    it('should transform released date of film from string into date', async () => {});
+    it('should return successfully created movie', async () => {
+      const createSpy = jest
+        .spyOn(repository, 'create')
+        .mockResolvedValue(createdMovie);
+      const res = await movieService.createMovie(userId, movieForCreation);
+      expect(createSpy).toHaveBeenCalledTimes(1);
+      expect(createSpy).toHaveBeenCalledWith(movieForCreation);
+      expect(res).toEqual(movieDto);
+    });
   });
 });
