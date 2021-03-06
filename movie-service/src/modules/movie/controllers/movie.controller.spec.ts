@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MovieController } from '.';
+import { movieCreateDto, movieDto, userId } from '../mocks';
 import { MovieService } from '../services';
 
 describe('MovieController', () => {
   let controller: MovieController;
-  let service: MovieService;
+  let movieService: MovieService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,7 +22,7 @@ describe('MovieController', () => {
     }).compile();
 
     controller = module.get<MovieController>(MovieController);
-    service = module.get<MovieService>(MovieService);
+    movieService = module.get<MovieService>(MovieService);
   });
 
   afterEach(() => {
@@ -33,12 +34,17 @@ describe('MovieController', () => {
   });
 
   it('service should be defined', () => {
-    expect(service).toBeDefined();
+    expect(movieService).toBeDefined();
   });
 
-  describe('getMovies', () => {
-    it('should return movies', async () => {
-      expect(true).toBeTruthy();
+  describe('createMovie', () => {
+    it('should return successfully created movie', async () => {
+      const createMovieSpy = jest
+        .spyOn(movieService, 'createMovie')
+        .mockResolvedValue(movieDto);
+      const res = await controller.createMovie(userId, movieCreateDto);
+      expect(res).toStrictEqual(movieDto);
+      expect(createMovieSpy).toBeCalledTimes(1);
     });
   });
 });
