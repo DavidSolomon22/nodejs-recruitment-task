@@ -20,19 +20,19 @@ export class Movie extends Document {
 
   @Prop({
     type: Date,
-    required: true,
+    required: false,
   })
   released: Date;
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   genre: string;
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   director: string;
 
