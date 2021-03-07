@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   NotImplementedException,
@@ -19,9 +20,9 @@ export class MovieController {
   @Post('movies')
   async createMovie(
     @User() user: UserParam,
-    movie: MovieCreateDto,
+    @Body() movie: MovieCreateDto,
   ): Promise<MovieDto> {
-    throw new NotImplementedException();
+    return await this.movieService.createMovie(user, movie);
   }
 
   @UseGuards(JwtAuthGuard)

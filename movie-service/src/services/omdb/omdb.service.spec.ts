@@ -1,5 +1,6 @@
 import { createMock } from '@golevelup/ts-jest';
 import { HttpService } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosResponse } from 'axios';
 import { omdbMovie } from 'common/mocks';
@@ -13,6 +14,7 @@ describe('OmdbService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule],
       providers: [
         OmdbService,
         {
@@ -47,8 +49,8 @@ describe('OmdbService', () => {
         Error: 'Movie not found!',
       };
       const response = {
-        body: {
-          movieNotFoundResponse,
+        data: {
+          ...movieNotFoundResponse,
         },
       };
       jest.spyOn(httpService, 'get').mockReturnValueOnce(
@@ -72,8 +74,8 @@ describe('OmdbService', () => {
         Director: 'Sidney Lumet',
       };
       const response = {
-        body: {
-          omdbResponseObject,
+        data: {
+          ...omdbResponseObject,
         },
       };
       jest.spyOn(httpService, 'get').mockReturnValueOnce(

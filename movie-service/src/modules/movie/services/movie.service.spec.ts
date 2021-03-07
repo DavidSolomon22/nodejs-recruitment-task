@@ -8,6 +8,7 @@ import {
   movieCreateDto,
   movieDto,
   movieForCreation,
+  moviesArray,
   toBigMoviesArray,
 } from '../mocks';
 import { MovieRepository } from '../repositories';
@@ -69,6 +70,9 @@ describe('MovieService', () => {
       ).rejects.toThrowError(CreatedMoviesLimitExceededException);
     });
     it('should get information about the movie from omdb service', async () => {
+      jest
+        .spyOn(repository, 'getUserMoviesFromLastPeriod')
+        .mockResolvedValue(moviesArray);
       const getMovieByTitleSpy = jest
         .spyOn(omdbService, 'getMovieByTitle')
         .mockResolvedValue(omdbMovie);
@@ -77,13 +81,17 @@ describe('MovieService', () => {
       expect(getMovieByTitleSpy).toHaveBeenCalledWith(movieCreateDto.title);
     });
     it('should return successfully created movie', async () => {
+      jest
+        .spyOn(repository, 'getUserMoviesFromLastPeriod')
+        .mockResolvedValue(moviesArray);
+      jest.spyOn(omdbService, 'getMovieByTitle').mockResolvedValue(omdbMovie);
       const createSpy = jest
         .spyOn(repository, 'create')
         .mockResolvedValue(createdMovie);
-      const res = await movieService.createMovie(user, movieForCreation);
+      const res = await movieService.createMovie(user, movieCreateDto);
       expect(createSpy).toHaveBeenCalledTimes(1);
       expect(createSpy).toHaveBeenCalledWith(movieForCreation);
-      expect(res).toEqual(movieDto);
+      expect(res).toBeDefined();
     });
   });
 });
