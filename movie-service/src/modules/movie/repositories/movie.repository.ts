@@ -19,7 +19,17 @@ export class MovieRepository {
     return this.movieModel.find({ userId }).exec();
   }
 
-  async getUserLastFiveMovies(userId: string): Promise<Movie[]> {
-    throw new NotImplementedException();
+  async getUserMoviesFromLastPeriod(
+    userId: string,
+    periodStart: Date,
+  ): Promise<Movie[]> {
+    return this.movieModel
+      .find({
+        userId,
+        createdAt: {
+          $gte: periodStart,
+        },
+      })
+      .exec();
   }
 }

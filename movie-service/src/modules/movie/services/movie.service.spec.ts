@@ -26,7 +26,7 @@ describe('MovieService', () => {
           useValue: {
             create: jest.fn(),
             getUserMovies: jest.fn(),
-            getUserLastFiveMovies: jest.fn(),
+            getUserMoviesFromLastPeriod: jest.fn(),
           },
         },
         {
@@ -62,7 +62,7 @@ describe('MovieService', () => {
   describe('createMovie', () => {
     it('should throw an error if user with basic role has already seen 5 movies at month', async () => {
       jest
-        .spyOn(repository, 'getUserLastFiveMovies')
+        .spyOn(repository, 'getUserMoviesFromLastPeriod')
         .mockResolvedValue(toBigMoviesArray);
       expect(
         movieService.createMovie(user, movieCreateDto),
@@ -76,7 +76,6 @@ describe('MovieService', () => {
       expect(getMovieByTitleSpy).toHaveBeenCalledTimes(1);
       expect(getMovieByTitleSpy).toHaveBeenCalledWith(movieCreateDto.title);
     });
-    it('should transform released date of film from string into date');
     it('should return successfully created movie', async () => {
       const createSpy = jest
         .spyOn(repository, 'create')

@@ -28,6 +28,8 @@ export const createdMovie = createMock<Movie>({
   createdAt: new Date(),
 });
 
+export const moviesArray = [createdMovie, createdMovie, createdMovie];
+
 export const toBigMoviesArray = createMock<Movie[]>([
   { title: 'movie1' },
   { title: 'movie2' },

@@ -1,7 +1,9 @@
+import { createMock } from '@golevelup/ts-jest';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Model } from 'mongoose';
+import { Model, Query } from 'mongoose';
 import { MovieRepository } from '.';
+import { moviesArray, userId } from '../mocks';
 import { Movie } from '../schemas';
 
 describe('MovieRepository', () => {
@@ -46,7 +48,21 @@ describe('MovieRepository', () => {
     it('should return all user movies', async () => {});
   });
 
-  describe('getUserLastFiveMovies', () => {
-    it('should return last 5 created movies by specific user (or less)', async () => {});
+  describe('getUserMoviesFromLastPeriod', () => {
+    it('should return created movies by specific user from last period', async () => {
+      const findSpy = jest.spyOn(model, 'find').mockReturnValueOnce(
+        createMock<Query<Movie[], Movie>>({
+          exec: jest.fn().mockResolvedValueOnce(moviesArray),
+        }),
+      );
+      const lastMonthDate = new Date();
+      lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+      const res = await repository.getUserMoviesFromLastPeriod(
+        userId,
+        lastMonthDate,
+      );
+      expect(findSpy).toBeCalledTimes(1);
+      expect(res).toStrictEqual(moviesArray);
+    });
   });
 });
