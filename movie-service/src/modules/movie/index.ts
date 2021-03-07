@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { HttpModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from 'modules/auth';
 import { OmdbService } from 'services/omdb';
 import { MovieController } from './controllers';
 import { MovieRepository } from './repositories/movie.repository';
@@ -9,6 +10,7 @@ import { MovieService } from './services';
 
 @Module({
   imports: [
+    AuthModule,
     HttpModule,
     MongooseModule.forFeatureAsync([
       {

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { user } from 'common/mocks';
 import { MovieController } from '.';
-import { movieCreateDto, movieDto, userId } from '../mocks';
+import { movieCreateDto, movieDto } from '../mocks';
 import { MovieService } from '../services';
 
 describe('MovieController', () => {
@@ -42,7 +43,7 @@ describe('MovieController', () => {
       const createMovieSpy = jest
         .spyOn(movieService, 'createMovie')
         .mockResolvedValue(movieDto);
-      const res = await controller.createMovie(userId, movieCreateDto);
+      const res = await controller.createMovie(user, movieCreateDto);
       expect(res).toStrictEqual(movieDto);
       expect(createMovieSpy).toBeCalledTimes(1);
     });

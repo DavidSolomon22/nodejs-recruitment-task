@@ -1,4 +1,5 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
+import { UserParam } from 'common/interfaces';
 import { OmdbService } from 'services/omdb';
 import { MovieCreateDto, MovieDto } from '../dtos';
 import { MovieRepository } from '../repositories';
@@ -10,7 +11,10 @@ export class MovieService {
     private omdbService: OmdbService,
   ) {}
 
-  async createMovie(userId: string, movie: MovieCreateDto): Promise<MovieDto> {
+  async createMovie(user: UserParam, movie: MovieCreateDto): Promise<MovieDto> {
+    const userLastFiveMovies = await this.movieRepository.getUserLastFiveMovies(
+      user.userId,
+    );
     throw new NotImplementedException();
   }
 

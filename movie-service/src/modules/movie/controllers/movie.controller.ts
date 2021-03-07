@@ -1,4 +1,13 @@
-import { Controller, Get, NotImplementedException, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotImplementedException,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { UserParam } from 'common/interfaces';
+import { User } from 'decorators';
+import { JwtAuthGuard } from 'modules/auth/guards';
 import { MovieCreateDto, MovieDto } from '../dtos';
 import { MovieService } from '../services';
 
@@ -6,13 +15,18 @@ import { MovieService } from '../services';
 export class MovieController {
   constructor(private movieService: MovieService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('movies')
-  async createMovie(userId: string, movie: MovieCreateDto): Promise<MovieDto> {
+  async createMovie(
+    @User() user: UserParam,
+    movie: MovieCreateDto,
+  ): Promise<MovieDto> {
     throw new NotImplementedException();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('movies')
-  async getMovies(userId: string): Promise<MovieDto[]> {
+  async getMovies(@User('userId') userId: string): Promise<MovieDto[]> {
     throw new NotImplementedException();
   }
 }

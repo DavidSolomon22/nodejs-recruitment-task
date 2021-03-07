@@ -41,7 +41,6 @@ You need to have `docker` and `docker-compose` installed on your computer to run
 2. Run from root dir
 
 ```bash
-# development
 $ docker-compose up
 ```
 

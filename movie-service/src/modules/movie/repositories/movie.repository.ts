@@ -8,15 +8,15 @@ import { Movie } from '../schemas';
 export class MovieRepository {
   constructor(
     @InjectModel('Movie')
-    private debtModel: Model<Movie>,
+    private movieModel: Model<Movie>,
   ) {}
 
   async create(movie: MovieForCreation): Promise<Movie> {
-    throw new NotImplementedException();
+    return this.movieModel.create(movie as Movie);
   }
 
   async getUserMovies(userId: string): Promise<Movie[]> {
-    throw new NotImplementedException();
+    return this.movieModel.find({ userId }).exec();
   }
 
   async getUserLastFiveMovies(userId: string): Promise<Movie[]> {

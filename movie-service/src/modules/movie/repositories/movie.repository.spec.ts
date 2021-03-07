@@ -37,4 +37,16 @@ describe('MovieRepository', () => {
   it('model should be defined', () => {
     expect(model).toBeDefined();
   });
+
+  describe('create', () => {
+    it('should return created movie', async () => {});
+  });
+
+  describe('getUserMovies', () => {
+    it('should return all user movies', async () => {});
+  });
+
+  describe('getUserLastFiveMovies', () => {
+    it('should return last 5 created movies by specific user (or less)', async () => {});
+  });
 });

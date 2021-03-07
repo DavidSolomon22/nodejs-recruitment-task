@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { omdbMovie } from 'common/mocks';
+import { omdbMovie, user } from 'common/mocks';
 import { CreatedMoviesLimitExceededException } from 'exceptions/created-movies-limit-exceeded.exception';
 import { OmdbService } from 'services/omdb';
 import { MovieService } from '.';
@@ -9,7 +9,6 @@ import {
   movieDto,
   movieForCreation,
   toBigMoviesArray,
-  userId,
 } from '../mocks';
 import { MovieRepository } from '../repositories';
 
@@ -66,23 +65,23 @@ describe('MovieService', () => {
         .spyOn(repository, 'getUserLastFiveMovies')
         .mockResolvedValue(toBigMoviesArray);
       expect(
-        movieService.createMovie(userId, movieCreateDto),
+        movieService.createMovie(user, movieCreateDto),
       ).rejects.toThrowError(CreatedMoviesLimitExceededException);
     });
     it('should get information about the movie from omdb service', async () => {
       const getMovieByTitleSpy = jest
         .spyOn(omdbService, 'getMovieByTitle')
         .mockResolvedValue(omdbMovie);
-      await movieService.createMovie(userId, movieCreateDto);
+      await movieService.createMovie(user, movieCreateDto);
       expect(getMovieByTitleSpy).toHaveBeenCalledTimes(1);
       expect(getMovieByTitleSpy).toHaveBeenCalledWith(movieCreateDto.title);
     });
-    it('should transform released date of film from string into date', async () => {});
+    it('should transform released date of film from string into date');
     it('should return successfully created movie', async () => {
       const createSpy = jest
         .spyOn(repository, 'create')
         .mockResolvedValue(createdMovie);
-      const res = await movieService.createMovie(userId, movieForCreation);
+      const res = await movieService.createMovie(user, movieForCreation);
       expect(createSpy).toHaveBeenCalledTimes(1);
       expect(createSpy).toHaveBeenCalledWith(movieForCreation);
       expect(res).toEqual(movieDto);
