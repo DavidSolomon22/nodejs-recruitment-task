@@ -1,28 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Movie } from '../schemas';
-import { Model } from 'mongoose';
+import { user } from 'common/mocks';
 import { MovieController } from '.';
-import { getModelToken } from '@nestjs/mongoose';
+import { movieCreateDto, movieDto } from '../mocks';
+import { MovieService } from '../services';
 
 describe('MovieController', () => {
   let controller: MovieController;
-  let model: Model<Movie>;
+  let movieService: MovieService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MovieController],
       providers: [
         {
-          provide: getModelToken('Movie'),
+          provide: MovieService,
           useValue: {
-            create: jest.fn(),
+            createMovie: jest.fn(),
+            getUserMovies: jest.fn(),
           },
         },
       ],
     }).compile();
 
     controller = module.get<MovieController>(MovieController);
-    model = module.get<Model<Movie>>(getModelToken('Movie'));
+    movieService = module.get<MovieService>(MovieService);
   });
 
   afterEach(() => {
@@ -33,13 +34,18 @@ describe('MovieController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('model should be defined', () => {
-    expect(model).toBeDefined();
+  it('service should be defined', () => {
+    expect(movieService).toBeDefined();
   });
 
-  describe('getMovies', () => {
-    it('should return movies', async () => {
-      expect(true).toBeTruthy();
+  describe('createMovie', () => {
+    it('should return successfully created movie', async () => {
+      const createMovieSpy = jest
+        .spyOn(movieService, 'createMovie')
+        .mockResolvedValue(movieDto);
+      const res = await controller.createMovie(user, movieCreateDto);
+      expect(res).toStrictEqual(movieDto);
+      expect(createMovieSpy).toBeCalledTimes(1);
     });
   });
 });

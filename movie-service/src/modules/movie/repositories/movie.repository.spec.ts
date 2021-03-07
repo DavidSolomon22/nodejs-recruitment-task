@@ -1,7 +1,9 @@
+import { createMock } from '@golevelup/ts-jest';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Model } from 'mongoose';
+import { Model, Query } from 'mongoose';
 import { MovieRepository } from '.';
+import { createdMovie, movieForCreation, moviesArray, userId } from '../mocks';
 import { Movie } from '../schemas';
 
 describe('MovieRepository', () => {
@@ -38,11 +40,47 @@ describe('MovieRepository', () => {
     expect(model).toBeDefined();
   });
 
-  describe('createMovie', () => {
-    it('should', async () => {});
+  describe('create', () => {
+    it('should return created movie', async () => {
+      const createSpy = jest
+        .spyOn(model, 'create')
+        .mockResolvedValue(createdMovie as never);
+      const res = await repository.create(movieForCreation);
+      expect(res).toBeDefined();
+      expect(res).toStrictEqual(createdMovie);
+      expect(createSpy).toHaveBeenCalledTimes(1);
+      expect(createSpy).toHaveBeenCalledWith(movieForCreation);
+    });
   });
 
-  describe('getMovies', () => {
-    it('should', async () => {});
+  describe('getUserMovies', () => {
+    it('should return all user movies', async () => {
+      const findSpy = jest.spyOn(model, 'find').mockReturnValueOnce(
+        createMock<Query<Movie[], Movie>>({
+          exec: jest.fn().mockResolvedValueOnce(moviesArray),
+        }),
+      );
+      const res = await repository.getUserMovies(userId);
+      expect(findSpy).toBeCalledTimes(1);
+      expect(res).toStrictEqual(moviesArray);
+    });
+  });
+
+  describe('getUserMoviesFromLastPeriod', () => {
+    it('should return created movies by specific user from last period', async () => {
+      const findSpy = jest.spyOn(model, 'find').mockReturnValueOnce(
+        createMock<Query<Movie[], Movie>>({
+          exec: jest.fn().mockResolvedValueOnce(moviesArray),
+        }),
+      );
+      const lastMonthDate = new Date();
+      lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+      const res = await repository.getUserMoviesFromLastPeriod(
+        userId,
+        lastMonthDate,
+      );
+      expect(findSpy).toBeCalledTimes(1);
+      expect(res).toStrictEqual(moviesArray);
+    });
   });
 });

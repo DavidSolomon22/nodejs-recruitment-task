@@ -20,12 +20,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(validationPipeConfig));
 
-  app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(reflector, {
-      strategy: 'excludeAll',
-    }),
-  );
-
   await app.listen(port);
 
   if (module.hot) {
