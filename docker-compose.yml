@@ -4,8 +4,6 @@ services:
     image: 'mongo:latest'
     ports:
       - '28017:27017'
-    volumes:
-      - ./data:/data/db
 
   auth-service:
     build:

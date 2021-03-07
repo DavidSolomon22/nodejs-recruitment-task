@@ -5,7 +5,7 @@ services:
       context: ./auth-service
       dockerfile: Dockerfile
     ports:
-      - '8081:3000'
+      - '9081:3000'
     volumes:
       - ./auth-service:/app
       - /app/node_modules
@@ -26,6 +26,8 @@ services:
       - PORT=3000
       - JWT_SECRET=c4VJW6YavdKjhi10ltjF5UTd9utI8qb4
       - JWT_ISS=https://www.netguru.com/
+      - OMDB_URL=http://www.omdbapi.com
+      - OMDB_API_KEY=${OMDB_API_KEY}
     ports:
       - '9082:3000'
     command: 'npm run test:${TEST:-unit}:watch'
