@@ -64,14 +64,6 @@ describe('MovieController (e2e)', () => {
         .send({ title: '12 Angry Men' });
       expect(res.status).toEqual(400);
     });
-    it('should return 201 code and created movie when everything is fine', async () => {
-      const res = await request(server)
-        .post('/movies')
-        .set('Authorization', 'bearer ' + basicUser.validJwt)
-        .send({ title: '12 Angry Men' });
-      expect(res.status).toEqual(201);
-      expect(res.body._id).toBeDefined();
-    });
   });
 
   describe('/movies (GET)', () => {
