@@ -21,7 +21,10 @@ export const movieDto: MovieDto = {
 
 export const movieForCreation: MovieForCreation = {
   userId: userId,
-  ...movieDto,
+  director: 'Sidney Lumet',
+  genre: 'Crime, Drama',
+  released: new Date('1957-04-10T00:00:00.000Z'),
+  title: '12 Angry Men',
 };
 
 export const createdMovie = createMock<Movie>({
