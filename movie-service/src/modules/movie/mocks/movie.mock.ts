@@ -19,6 +19,8 @@ export const movieDto: MovieDto = {
   createdAt: new Date('2021-03-07T16:12:57.000Z'),
 };
 
+export const movieDtosArray: MovieDto[] = [movieDto, movieDto, movieDto];
+
 export const movieForCreation: MovieForCreation = {
   userId: userId,
   director: 'Sidney Lumet',

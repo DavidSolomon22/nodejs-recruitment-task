@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { user } from 'common/mocks';
 import { MovieController } from '.';
-import { movieCreateDto, movieDto } from '../mocks';
+import { movieCreateDto, movieDto, movieDtosArray, userId } from '../mocks';
 import { MovieService } from '../services';
 
 describe('MovieController', () => {
@@ -46,6 +46,18 @@ describe('MovieController', () => {
       const res = await controller.createMovie(user, movieCreateDto);
       expect(res).toStrictEqual(movieDto);
       expect(createMovieSpy).toBeCalledTimes(1);
+    });
+  });
+
+  describe('getMovies', () => {
+    it('should return array of user movies', async () => {
+      const getUserMoviesSpy = jest
+        .spyOn(movieService, 'getUserMovies')
+        .mockResolvedValue(movieDtosArray);
+      const res = await controller.getMovies(userId);
+      expect(Array.isArray(res)).toBeTruthy();
+      expect(res).toStrictEqual(movieDtosArray);
+      expect(getUserMoviesSpy).toBeCalledTimes(1);
     });
   });
 });

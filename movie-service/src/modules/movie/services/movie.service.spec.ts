@@ -6,10 +6,10 @@ import { MovieService } from '.';
 import {
   createdMovie,
   movieCreateDto,
-  movieDto,
   movieForCreation,
   moviesArray,
   toBigMoviesArray,
+  userId,
 } from '../mocks';
 import { MovieRepository } from '../repositories';
 
@@ -92,6 +92,17 @@ describe('MovieService', () => {
       expect(createSpy).toHaveBeenCalledTimes(1);
       expect(createSpy).toHaveBeenCalledWith(movieForCreation);
       expect(res).toBeDefined();
+    });
+  });
+
+  describe('getUserMovies', () => {
+    it('should return array of user movies', async () => {
+      const getUserMoviesSpy = jest
+        .spyOn(repository, 'getUserMovies')
+        .mockResolvedValue(moviesArray);
+      const res = await movieService.getUserMovies(userId);
+      expect(getUserMoviesSpy).toBeCalledTimes(1);
+      expect(Array.isArray(res)).toBeTruthy();
     });
   });
 });

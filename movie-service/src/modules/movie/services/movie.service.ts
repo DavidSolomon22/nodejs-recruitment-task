@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Role } from 'common/enums';
 import { UserParam } from 'common/interfaces';
 import { CreatedMoviesLimitExceededException } from 'exceptions';
@@ -36,6 +36,6 @@ export class MovieService {
   }
 
   async getUserMovies(userId: string): Promise<MovieDto[]> {
-    throw new NotImplementedException();
+    return await this.movieRepository.getUserMovies(userId);
   }
 }

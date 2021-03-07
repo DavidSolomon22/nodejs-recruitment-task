@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotImplementedException,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UserParam } from 'common/interfaces';
 import { User } from 'decorators';
 import { JwtAuthGuard } from 'modules/auth/guards';
@@ -28,6 +21,6 @@ export class MovieController {
   @UseGuards(JwtAuthGuard)
   @Get('movies')
   async getMovies(@User('userId') userId: string): Promise<MovieDto[]> {
-    throw new NotImplementedException();
+    return await this.movieService.getUserMovies(userId);
   }
 }
