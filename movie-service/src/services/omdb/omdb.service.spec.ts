@@ -2,7 +2,7 @@ import { createMock } from '@golevelup/ts-jest';
 import { HttpService } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosResponse } from 'axios';
-import { OmdbMovie } from 'common/interfaces';
+import { omdbMovie } from 'common/mocks';
 import { MovieNotExistException } from 'exceptions/movie-not-exist.exception';
 import { Observable } from 'rxjs';
 import { OmdbService } from '.';
@@ -82,12 +82,8 @@ describe('OmdbService', () => {
         }),
       );
       const movieTitle = '12 Angry Men';
-      const omdbMovie: OmdbMovie = {
-        director: 'Sidney Lumet',
-        genre: 'Crime, Drama',
-        released: '10 Apr 1957',
-      };
       const res = await omdbService.getMovieByTitle(movieTitle);
+      expect(res?.released instanceof Date).toBeTruthy();
       expect(res).toStrictEqual(omdbMovie);
     });
   });

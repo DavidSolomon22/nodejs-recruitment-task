@@ -1,5 +1,5 @@
 export interface OmdbMovie {
-  released: string;
-  genre: string;
-  director: string;
+  released?: Date;
+  genre?: string;
+  director?: string;
 }
