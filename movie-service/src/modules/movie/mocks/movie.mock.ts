@@ -11,10 +11,12 @@ export const movieCreateDto: MovieCreateDto = {
 };
 
 export const movieDto: MovieDto = {
+  _id: '6044fb88a06840002ee64770',
   director: 'Sidney Lumet',
   genre: 'Crime, Drama',
   released: new Date('1957-04-10T00:00:00.000Z'),
   title: '12 Angry Men',
+  createdAt: new Date('2021-03-07T16:12:57.000Z'),
 };
 
 export const movieForCreation: MovieForCreation = {
