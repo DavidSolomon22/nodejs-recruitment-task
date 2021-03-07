@@ -2,7 +2,6 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import { Role } from 'common/enums';
 import { UserParam } from 'common/interfaces';
 import { CreatedMoviesLimitExceededException } from 'exceptions';
-import * as moment from 'moment';
 import { OmdbService } from 'services/omdb';
 import { MovieCreateDto, MovieDto } from '../dtos';
 import { MovieForCreation } from '../interfaces';

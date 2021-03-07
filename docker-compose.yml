@@ -32,6 +32,7 @@ services:
       - JWT_SECRET=c4VJW6YavdKjhi10ltjF5UTd9utI8qb4
       - JWT_ISS=https://www.netguru.com/
       - MONGO_URL=mongodb://mongo:27017/movie-db
+      - OMDB_URL=http://www.omdbapi.com
     ports:
       - '8082:3000'
     depends_on:

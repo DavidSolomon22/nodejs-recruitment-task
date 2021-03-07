@@ -41,7 +41,7 @@ You need to have `docker` and `docker-compose` installed on your computer to run
 2. Run from root dir
 
 ```bash
-$ docker-compose up
+$ OMDB_API_KEY=your_api_key docker-compose up
 ```
 
 ## Test
